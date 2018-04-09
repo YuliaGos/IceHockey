@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_height">110dp</dimen>
+
+    <dimen name="layout_heights">30dp</dimen>
+    <dimen name="layout_marginBottom">8dp</dimen>
+    <dimen name="layout_marginLeft">20dp</dimen>
+    <dimen name="layout_marginRight">20dp</dimen>
+</resources>

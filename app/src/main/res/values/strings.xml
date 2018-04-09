@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">IceHockey</string>
+    <string name="TeamA">Russia</string>
+    <string name="TeamB">USA</string>
+    <string name="Time">00:00</string>
+    <string name="Score">0</string>
+    <string name="Goal">Goal</string>
+    <string name="Timer">Timer</string>
+    <string name="CountDown">Penalty</string>
+    <string name="Reset">New Game</string>
+    <string name="Text">Ice Hockey</string>
+</resources>

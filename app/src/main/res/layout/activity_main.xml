@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.icehockey.MainActivity"
+    android:background="@color/icy_blue">
+
+    <Button
+        android:id="@+id/button_reset_timer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_heights"
+        android:text="@string/Reset"
+        style="@style/ResetButtons"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_height"
+        android:src="@drawable/olympics2"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image"
+        android:text="@string/Text"
+        style="@style/Text"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text"
+        android:alpha="0.4"
+        android:src="@drawable/jucatorhochei" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@id/text">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:context="com.example.android.courtcounter.MainActivity">
+
+            <Spinner
+            android:id="@+id/spinner_counries_teamA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_marginTop="15dp"/>
+
+            <TextView
+            android:id="@+id/teamA_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Score"
+            style="@style/ScoreDisplays"/>
+
+            <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_heights"
+            android:onClick="goalForTeamA"
+            android:text="@string/Goal"
+            style="@style/ScoreButtons"/>
+
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Timer"
+            style="@style/TimerText"/>
+
+            <TextView
+            android:id="@+id/text_teamA_countdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Time"
+            style="@style/TimerDisplays"/>
+
+            <Button
+            android:id="@+id/button_start_teamA"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_heights"
+            android:text="@string/CountDown"
+            style="@style/TimerButtons"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:context="com.example.android.courtcounter.MainActivity">
+
+            <Spinner
+                android:id="@+id/spinner_counries_teamB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/teamB_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Score"
+                style="@style/ScoreDisplays"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_heights"
+                android:onClick="goalForTeamB"
+                android:text="@string/Goal"
+                style="@style/ScoreButtons"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Timer"
+                style="@style/TimerText"/>
+
+            <TextView
+                android:id="@+id/text_teamB_countdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Time"
+                style="@style/TimerDisplays"/>
+
+            <Button
+                android:id="@+id/button_start_teamB"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_heights"
+                android:text="@string/CountDown"
+                style="@style/TimerButtons"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
