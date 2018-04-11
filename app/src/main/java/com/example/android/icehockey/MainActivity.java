@@ -5,180 +5,179 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     int scoreTeamA=0;
     int scoreTeamB=0;
-
-    private ArrayList<CountryItem> mCountryList;
-    private CountryAdapter mAdapterTeamA;
-    private CountryAdapter mAdapterTeamB;
-
+    Spinner spinnerTeamA;
+    Spinner spinnerTeamB;
+    String[] textArray = { "CAN", "CZE", "FIN", "GER", "NOR", "RUS", "SVK", "SLV", "KOR", "SWE", "SUI", "USA" };
+    Integer[] imageArray = { R.drawable.canada, R.drawable.czech, R.drawable.finland, R.drawable.germany,R.drawable.norway, R.drawable.russia, R.drawable.slovakia,R.drawable.slovenia, R.drawable.soukorea,R.drawable.sweden, R.drawable.switzerland, R.drawable.usa };
     private static final long START_TIME_IN_MILLIS_TeamA=120000;
     private static final long START_TIME_IN_MILLIS_TeamB=120000;
-    private TextView textViewCountdownTeamA;
+    private TextView textViewCountDownTeamA;
     private Button buttonStartTeamA;
-    private TextView textViewCountdownTeamB;
+    private TextView textViewCountDownTeamB;
     private Button buttonStartTeamB;
-    private Button buttonResetTimer;
-
-    boolean timerRunningTeamA;
-    boolean timerRunningTeamB;
-
-
+    private Button buttonReset;
     private CountDownTimer countDownTimerTeamA;
     private CountDownTimer countDownTimerTeamB;
+    private boolean timerRunningTeamA;
+    private boolean timerRunningTeamB;
     private long timeLeftInMillisTeamA = START_TIME_IN_MILLIS_TeamA;
     private long timeLeftInMillisTeamB = START_TIME_IN_MILLIS_TeamB;
 
-    private int counter = 0;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
 
-        //code for spinner below
-        initList();
+        TextView text = (TextView) findViewById(R.id.text_view_name);
+        ImageView imageView =(ImageView)findViewById(R.id.image_view_flag);
+        spinnerTeamA = (Spinner) findViewById(R.id.spinner_counries_teamA);
+        spinnerTeamB = (Spinner) findViewById(R.id.spinner_counries_teamB);
 
-        Spinner spinnerCountriesTeamA=findViewById(R.id.spinner_counries_teamA);
-        Spinner spinnerCountriesTeamB=findViewById(R.id.spinner_counries_teamB);
-
-        mAdapterTeamA=new CountryAdapter(this,mCountryList);
-        spinnerCountriesTeamA.setAdapter(mAdapterTeamA);
-        mAdapterTeamB=new CountryAdapter(this,mCountryList);
-        spinnerCountriesTeamB.setAdapter(mAdapterTeamB);
+        ImageArrayAdapter adapter = new ImageArrayAdapter(getApplicationContext(),imageArray,textArray);
+        spinnerTeamA.setAdapter(adapter);
+        spinnerTeamB.setAdapter(adapter);
 
 
-        //code for Score below
-        displayForTeamA(scoreTeamA);
-        displayForTeamB(scoreTeamB);
-
-        //Code for Timer Below
-        textViewCountdownTeamA = findViewById(R.id.text_teamA_countdown);
+        textViewCountDownTeamA = findViewById(R.id.text_teamA_countdown);
         buttonStartTeamA = findViewById(R.id.button_start_teamA);
-        textViewCountdownTeamB = findViewById(R.id.text_teamB_countdown);
+        textViewCountDownTeamB = findViewById(R.id.text_teamB_countdown);
         buttonStartTeamB = findViewById(R.id.button_start_teamB);
-        buttonResetTimer=findViewById(R.id.button_reset_timer);
+        buttonReset=findViewById(R.id.button_reset);
 
-
-        buttonStartTeamA.setOnClickListener(new View.OnClickListener() {
+        buttonStartTeamA.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                startTimerTeamA();
+                if(timerRunningTeamA) {
+                    newStartTimerTeamA();
+                }else{
+                    startTimerTeamA();
+                }
+
             }
         });
 
-        buttonStartTeamB.setOnClickListener(new View.OnClickListener() {
+        buttonReset.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                startTimerTeamB();
+                reserTimer();
+
             }
         });
 
-        buttonResetTimer.setOnClickListener(new View.OnClickListener() {
+        buttonStartTeamB.setOnClickListener (new View.OnClickListener (){
+
             @Override
-            public void onClick(View arg0) {
-                scoreTeamA = 0;
-                scoreTeamB = 0;
-                displayForTeamA(scoreTeamA);
-                displayForTeamB(scoreTeamB);
-                timerRunningTeamA=false;
-                countDownTimerTeamA.cancel();
-                textViewCountdownTeamA.setText("00:00");
-                timerRunningTeamB=false;
-                countDownTimerTeamB.cancel();
-                textViewCountdownTeamB.setText("00:00");
+            public void onClick(View view) {
+                if(timerRunningTeamB) {
+                    newStartTimerTeamB();
+                }else{
+                    startTimerTeamB();
+                }
             }
         });
 
-    }
-
-    private void initList(){
-        mCountryList= new ArrayList<>();
-        mCountryList.add(new CountryItem("CAN",R.drawable.canada));
-        mCountryList.add(new CountryItem("CZE",R.drawable.czech));
-        mCountryList.add(new CountryItem("FIN",R.drawable.finland));
-        mCountryList.add(new CountryItem("GER",R.drawable.germany));
-        mCountryList.add(new CountryItem("NOR",R.drawable.norway));
-        mCountryList.add(new CountryItem("RUS",R.drawable.russia));
-        mCountryList.add(new CountryItem("KOR",R.drawable.soukorea));
-        mCountryList.add(new CountryItem("SVK",R.drawable.slovakia));
-        mCountryList.add(new CountryItem("SLV",R.drawable.slovenia));
-        mCountryList.add(new CountryItem("SWE",R.drawable.sweden));
-        mCountryList.add(new CountryItem("SUI",R.drawable.switzerland));
-        mCountryList.add(new CountryItem("USA",R.drawable.usa));
-    }
-
-    public void stopTimerTeamA(){
-
-    }
-
-
-
-
-    public void startTimerTeamA(){
-        countDownTimerTeamA=new CountDownTimer(timeLeftInMillisTeamA,1000) {
+        buttonReset.setOnClickListener (new View.OnClickListener () {
             @Override
-
+            public void onClick(View view) {
+                reserTimer ();
+            }
+        });
+    }
+    private void startTimerTeamA() {
+        countDownTimerTeamA=new CountDownTimer (timeLeftInMillisTeamA, 1000) {
+            @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillisTeamA=millisUntilFinished;
-
                 updateCountDownTextTeamA();
+
             }
 
             @Override
             public void onFinish() {
+                timerRunningTeamA=false;
+                buttonStartTeamA.setText("Penalty");
 
             }
-        }.start();
+        }.start ();
+        timerRunningTeamA=true;
+        buttonStartTeamA.setText("New Penalty");
     }
-
-
-
-    public void startTimerTeamB(){
-        countDownTimerTeamB=new CountDownTimer(timeLeftInMillisTeamB,1000) {
+    private void startTimerTeamB() {
+        countDownTimerTeamB=new CountDownTimer (timeLeftInMillisTeamB, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillisTeamB=millisUntilFinished;
                 updateCountDownTextTeamB();
+
             }
+
             @Override
             public void onFinish() {
+                timerRunningTeamB=false;
+                buttonStartTeamB.setText("Penalty");
 
             }
-        }.start();
+        }.start ();
+        timerRunningTeamB=true;
+        buttonStartTeamB.setText("New Penalty");
     }
 
-    public void stopTimer(){
-
+    private void newStartTimerTeamA() {
+        countDownTimerTeamA.cancel();
+        timeLeftInMillisTeamA=START_TIME_IN_MILLIS_TeamA;
+        startTimerTeamA ();
     }
 
-    public void updateCountDownTextTeamA(){
+    private void newStartTimerTeamB() {
+        countDownTimerTeamB.cancel();
+        timeLeftInMillisTeamB=START_TIME_IN_MILLIS_TeamB;
+        startTimerTeamB ();
+    }
+
+    private void reserTimer() {
+        scoreTeamA = 0;
+        scoreTeamB = 0;
+        displayForTeamA(scoreTeamA);
+        displayForTeamB(scoreTeamB);
+        timerRunningTeamA=false;
+        countDownTimerTeamA.cancel();
+        textViewCountDownTeamA.setText("00:00");
+        timeLeftInMillisTeamA=START_TIME_IN_MILLIS_TeamA;
+        buttonStartTeamA.setText("Penalty");
+        timerRunningTeamB=false;
+        countDownTimerTeamB.cancel();
+        textViewCountDownTeamB.setText("00:00");
+        timeLeftInMillisTeamB=START_TIME_IN_MILLIS_TeamB;
+        buttonStartTeamB.setText("Penalty");
+    }
+
+    private void updateCountDownTextTeamA(){
         int minutes=(int) (timeLeftInMillisTeamA / 1000)/60;
         int seconds=(int) (timeLeftInMillisTeamA / 1000) % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        String timeLeftFormatted=String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
 
-        textViewCountdownTeamA.setText(timeLeftFormatted);
+        textViewCountDownTeamA.setText(timeLeftFormatted);
 
     }
-
-    public void updateCountDownTextTeamB() {
+    private void updateCountDownTextTeamB(){
         int minutes=(int) (timeLeftInMillisTeamB / 1000)/60;
         int seconds=(int) (timeLeftInMillisTeamB / 1000) % 60;
 
         String timeLeftFormatted=String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
 
-        textViewCountdownTeamB.setText(timeLeftFormatted);
-    }
+        textViewCountDownTeamB.setText(timeLeftFormatted);
 
+    }
 
     public void goalForTeamA (View view) {
         scoreTeamA=scoreTeamA+1;
